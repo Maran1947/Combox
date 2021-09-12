@@ -1,0 +1,276 @@
+<%- include("partials/header"); -%>
+
+    <div class="track_box">
+        <form action="" class="track_coding_profile">
+            <h2>Track Coding Profile</h2>
+            <label for="platform">Platform: </label>
+            <input type="text" name="platform" id="" required />
+            <label for="username">Username: </label>
+            <input type="text" name="username" required />
+            <button type='submit'>Get profile</button>
+        </form>
+    </div>
+    <div class="loader">
+
+    </div>
+    <div class="profile_box">
+        <h2>Profile Box</h2>
+        <div class="codechef_box">
+            <div class="codechef_badge badge">
+
+            </div>
+            <div class="contests">
+                <h2>Your Contests</h2>
+                <div class="codechef_contests_box contests_box">
+
+                </div>
+            </div>
+            <div class="contests">
+                <h2>Contests Rating</h2>
+                <div class="codechef_contests_rating_box contests_box">
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="codeforces_box">
+            <div class="codeforces_badge badge">
+
+            </div>
+            <div class="contests">
+                <h2>Your Contests</h2>
+                <div class="codeforces_contests_box contests_box">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="leetcode_box">
+            <div class="leetcode_badge">
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.querySelector('form');
+        const loader = document.querySelector('.loader');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            loader.style.visibility = 'visible';
+            document.querySelector('body').style.opacity = 0.3;
+            const platform = form.platform.value;
+            const username = form.username.value;
+            try {
+                const res = await fetch('/get-coding-profile', {
+                    method: 'POST',
+                    body: JSON.stringify({ platform, username }),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                let data = await res.json();
+                data = JSON.parse(data);
+                loader.style.visibility = 'hidden';
+                document.querySelector('body').style.opacity = 1;
+                if (platform === 'codechef') {
+
+                    document.querySelector('.leetcode_box').style.display = 'none';
+                    document.querySelector('.codeforces_box').style.display = 'none';
+                    document.querySelector('.codechef_box').style.display = 'block';
+
+                    let badge = `
+                <div class="small_card current_platform">
+                    <h2>${username}</h2>
+                    <span>${platform}</span>
+                </div>
+                `;
+                    let rating = `
+                <div class="small_card current_platform">
+                    <h2>${data.stars}</h2>
+                    <span>current stars</span>
+                </div>
+                `;
+                    let max_rating = `
+                <div class="small_card current_platform">
+                    <h2>${data.highest_rating}</h2>
+                    <span>highest rating</span>
+                </div>
+                `;
+
+                    let global_rank = `
+                <div class="small_card current_platform">
+                    <h2>${data.global_rank}</h2>
+                    <span>global rank</span>
+                </div>
+                `;
+                    let country_rank = `
+                <div class="small_card current_platform">
+                    <h2>${data.country_rank}</h2>
+                    <span>country rank</span>
+                </div>
+                `;
+
+                    let contests_box = ``;
+
+                    data.contests.forEach(contest => {
+                        contests_box += `
+                        <div class="single_contest">
+                            <p>Contest Name: <span>${contest["name"]}</span></p>
+                            <p>Rating: <span>${contest["rating"]}</span></p>
+                            <p>Global Rank: <span>${contest["global_rank"]}</span></p>
+                            <p>Country Rank: <span>${contest["country_rank"]}</span></p>
+                        </div>
+                        `;
+                    });
+
+                    let contests_rating_box = ``;
+
+                    data.contest_ratings.forEach(contest => {
+                        contests_rating_box += `
+    <div class="single_contest">
+        <p>Contest Name: <span>${contest["name"]}</span></p>
+        <p>Contest Code: <span>${contest["code"]}</span></p>
+        <p>Rating: <span>${contest["rating"]}</span></p>
+        <p>Rank: <span>${contest["rank"]}</span></p>
+    </div>
+    `;
+                    });
+
+                    document.querySelector('.codechef_badge').innerHTML = badge + rating + max_rating + global_rank + country_rank;
+                    document.querySelector('.codechef_contests_box').innerHTML = contests_box;
+                    document.querySelector('.codechef_contests_rating_box').innerHTML = contests_rating_box;
+
+
+                } else if (platform === 'codeforces') {
+                    document.querySelector('.codechef_box').style.display = 'none';
+                    document.querySelector('.leetcode_box').style.display = 'none';
+                    document.querySelector('.codeforces_box').style.display = 'block';
+                    let badge = `
+                <div class="small_card current_platform">
+                    <h2>${username}</h2>
+                    <span>${platform}</span>
+                </div>
+                `;
+                    let rating = `
+                <div class="small_card current_platform">
+                    <h2>${data.rating}</h2>
+                    <span>current rating</span>
+                </div>
+                `;
+                    let max_rating = `
+                <div class="small_card current_platform">
+                    <h2>${data["max rating"]}</h2>
+                    <span>max rating</span>
+                </div>
+                `;
+
+                    let rank = `
+                <div class="small_card current_platform">
+                    <h2>${data.rank}</h2>
+                    <span>current rank</span>
+                </div>
+                `;
+                    let max_rank = `
+                <div class="small_card current_platform">
+                    <h2>${data["max rank"]}</h2>
+                    <span>max rank</span>
+                </div>
+                `;
+
+                    let contests_box = ``;
+
+                    data.contests.forEach(contest => {
+                        contests_box += `
+                        <div class="single_contest">
+                            <p>Problem Name: <span>${contest["Contest"]}</span></p>
+                            <p>Rank: <span>${contest["Rank"]}</span></p>
+                            <p>Solved: <span>${contest["Solved"]}</span></p>
+                            <p>Rating Change: <span>${contest["Rating Change"]}</span></p>
+                            <p>New Rating: <span>${contest["New Rating"]}</span></p>
+                        </div>
+                        `;
+                    })
+                    // console.log(contests_box);
+                    document.querySelector('.codeforces_badge').innerHTML = badge + rating + max_rating + rank + max_rank;
+                    document.querySelector('.codeforces_contests_box').innerHTML = contests_box;
+
+
+                } else if (platform === 'leetcode') {
+                    document.querySelector('.codechef_box').style.display = 'none';
+                    document.querySelector('.codeforces_box').style.display = 'none';
+                    document.querySelector('.leetcode_box').style.display = 'block';
+                    let badge = `
+                <div class="small_card current_platform">
+                    <h2>${username}</h2>
+                    <span>${platform}</span>
+                </div>
+                `;
+                    let ranking = `
+                <div class="small_card current_platform">
+                    <h2>${data.ranking}</h2>
+                    <span>current ranking</span>
+                </div>
+                `;
+                    let total_problems_submitted = `
+                <div class="small_card current_platform">
+                    <h2>${data.total_problems_submitted}</h2>
+                    <span>Total problems submitted</span>
+                </div>
+                `;
+
+                    let easy_problems_submitted = `
+                <div class="small_card current_platform">
+                    <h2>${data.easy_problems_submitted}</h2>
+                    <span>Easy problems submitted</span>
+                </div>
+                `;
+
+                    let easy_problems_solved = `
+                <div class="small_card current_platform">
+                    <h2>${data.easy_questions_solved}/${data.total_easy_questions}</h2>
+                    <span>Easy problems solved</span>
+                </div>
+                `;
+
+                    let medium_problems_submitted = `
+                <div class="small_card current_platform">
+                    <h2>${data.medium_problems_submitted}</h2>
+                    <span>Easy problems submitted</span>
+                </div>
+                `;
+
+                    let medium_problems_solved = `
+                <div class="small_card current_platform">
+                    <h2>${data.medium_questions_solved}/${data.total_medium_questions}</h2>
+                    <span>Medium problems solved</span>
+                </div>
+                `;
+
+                    let hard_problems_submitted = `
+                <div class="small_card current_platform">
+                    <h2>${data.hard_problems_submitted}</h2>
+                    <span>Easy problems submitted</span>
+                </div>
+                `;
+
+                    let hard_problems_solved = `
+                <div class="small_card current_platform">
+                    <h2>${data.hard_questions_solved}/${data.total_hard_questions}</h2>
+                    <span>Hard problems solved</span>
+                </div>
+                `;
+
+
+                    document.querySelector('.leetcode_badge').innerHTML = ranking + total_problems_submitted + easy_problems_submitted
+                        + easy_problems_solved + medium_problems_submitted + medium_problems_solved
+                        + hard_problems_submitted + hard_problems_solved;
+                }
+
+            } catch (err) {
+                console.log(err);
+            }
+        });
+    </script>
+
+    <%- include("partials/footer") -%>
