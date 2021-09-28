@@ -1,0 +1,48 @@
+<div class="codeforces_box">
+    <div class="codeforces_badge badge">
+
+        <div class="small_card current_platform">
+            <h2><%= data.username %></h2>
+            <span><%= data.platform %></span>
+        </div>
+
+
+        <div class="small_card current_platform">
+            <h2><%= data.response.rating %></h2>
+            <span>current rating</span>
+        </div>
+ 
+        <div class="small_card current_platform">
+            <h2><%= data.response["max rating"] %></h2>
+            <span>max rating</span>
+        </div>
+
+        <div class="small_card current_platform">
+            <h2><%= data.response.rank %></h2>
+            <span>current rank</span>
+        </div>
+
+        <div class="small_card current_platform">
+            <h2><%= data.response["max rank"] %></h2>
+            <span>max rank</span>
+        </div>
+        `;
+
+    </div>
+    <div class="contests">
+        <h2>Your Contests</h2>
+        <div class="codeforces_contests_box contests_box">
+            <% data.response.contests.forEach(contest => { %>
+
+                <div class="single_contest">
+                    <p>Contest Name: <span><%= contest["Contest"] %></span></p>
+                    <p>Rank: <span><%= contest["Rank"] %></span></p>
+                    <p>Solved: <span><%= contest["Solved"] %></span></p>
+                    <p>Rating Change: <span><%= contest["Rating Change"] %></span></p>
+                    <p>New Rating: <span><%= contest["New Rating"] %></span></p>
+                </div>
+
+            <% }); %>
+        </div>
+    </div>
+</div>

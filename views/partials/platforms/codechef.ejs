@@ -1,0 +1,60 @@
+<div class="codechef_box">
+    <div class="codechef_badge badge">
+
+        <div class="small_card current_platform">
+            <h2><%- data.username -%></h2>
+            <span><%- data.platform -%></span>
+        </div>
+
+        <div class="small_card current_platform">
+            <h2><%= data.response.stars %></h2>
+            <span>current stars</span>
+        </div>
+
+        <div class="small_card current_platform">
+            <h2><%= data.response.highest_rating %></h2>
+            <span>highest rating</span>
+        </div>
+
+        <div class="small_card current_platform">
+            <h2><%= data.response.global_rank %></h2>
+            <span>global rank</span>
+        </div>
+
+        <div class="small_card current_platform">
+            <h2><%= data.response.country_rank %></h2>
+            <span>country rank</span>
+        </div>
+
+    </div>
+    <div class="contests">
+        <h2>Your Contests</h2>
+        <div class="codechef_contests_box contests_box">
+            <% data.response.contests.forEach(contest => { %>
+                
+                <div class="single_contest">
+                    <p>Contest Name: <span><%= contest["name"] %></span></p>
+                    <p>Rating: <span><%= contest["rating"] %></span></p>
+                    <p>Global Rank: <span><%= contest["global_rank"] %></span></p>
+                    <p>Country Rank: <span><%= contest["country_rank"] %></span></p>
+                </div>
+                
+            <% }); %>
+        </div>
+    </div>
+    <div class="contests">
+        <h2>Contests Rating</h2>
+        <div class="codechef_contests_rating_box contests_box">
+            <% data.response.contest_ratings.forEach(contest => { %>
+                
+                <div class="single_contest">
+                    <p>Contest Name: <span><%= contest["name"] %></span></p>
+                    <p>Contest Code: <span><%= contest["code"] %></span></p>
+                    <p>Rating: <span><%= contest["rating"] %></span></p>
+                    <p>Rank: <span><%= contest["rank"] %></span></p>
+                </div>
+                
+            <% }); %>
+        </div>
+    </div> 
+</div>

@@ -12,14 +12,6 @@
     <nav>
         <h1 class="logo"><a href="/">Combox</a></h1>
         <ul>
-            <% if(user) { %>
-                <li><a href="/track">Track</a></li>
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="/logout">Log out</a></li>
-            <% } else { %>
-                <li><a href="/signup">Sign up</a></li>
-                <li><a href="/login">Log in</a></li>
-            <% } %>
+            <li><a href="/track">Track</a></li>
         </ul>
     </nav>
-    <% if(user) { %> <h2 class="username">Welcome, <%- user.email -%></h1> <% } %>

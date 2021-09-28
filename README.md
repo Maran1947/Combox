@@ -11,9 +11,9 @@ With Combox, you can track all your coding platform profiles.
 ```Git
 
 $ git clone https://github.com/Maran1947/Combox.git
-cd Combox
-npm install
-node app.js
+$ cd Combox
+$ npm install
+$ node app.js
 
 ```
 
